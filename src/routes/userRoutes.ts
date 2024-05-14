@@ -3,11 +3,7 @@ import * as userController from '../controller/user.controller';
 import RouteInterface from './route.interface';
 
 
-/**
- * Here, you can register routes by instantiating the controller.
- *
- */
-export default class UserRoute implements RouteInterface {
+export default class User2Route implements RouteInterface {
 	public router: Router = Router();
 
 

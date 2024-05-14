@@ -3,44 +3,42 @@ import { UserRequest } from "../model/request/user.request";
 import { User } from "../persistence/entity/user";
 
 export async function createUser(request: UserRequest): Promise<User> {
-    
-    return new Promise<User>((resolve, reject) => {
-        User.findOne({ where: { username: request.username } }).then(async(user) => {  
-            if (user) {
-                console.log("User already exists");
-                throw Error("User already exists");
-            }
-            // Hash the password
-            const hashedPassword = AppUtils.generateHashPassword(request.password);
-            if (!hashedPassword) {
-                console.error("Error hashing password");
-                reject("Error hashing password");
-            
-            }
-            // Create a new user
-            const newUser = new User({
-                firstName: request.firstName,
-                lastName: request.lastName,
-                email: request.email,
-                username: request.username,
-                password: hashedPassword,
-                role: request.role,
-                createdAt: new Date(),
-                createdBy: "system"
-            });
-            // Save the user
-            newUser.save().then((user) => {
-                console.log("User created successfully");
-                resolve(user)
-                return user;
-            }).catch((error) => {
-                console.error("Error creating user:", error);
-                reject(null);
-            });
-        }).catch((error) => {
-            reject(error);
+    try {
+        const user = await User.findOne({ where: { username: request.username } });
+
+        if (user) {
+            console.log("User already exists");
+            throw new Error("User already exists");
+        }
+
+        // Hash the password
+        const hashedPassword = AppUtils.generateHashPassword(request.password);
+        if (!hashedPassword) {
+            console.error("Error hashing password");
+            throw new Error("Error hashing password");
+        }
+
+        // Create a new user
+        const newUser = new User({
+            firstName: request.firstName,
+            lastName: request.lastName,
+            email: request.email,
+            username: request.username,
+            password: hashedPassword,
+            role: request.role,
+            createdAt: new Date(),
+            createdBy: "system"
         });
-    });
+
+        // Save the user
+        const savedUser = await newUser.save();
+
+        console.log("User created successfully");
+        return savedUser;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        throw new Error("Internal server error");
+    }
 }
 
 export async function updateUser(request: UserRequest, id: number): Promise<User> {
@@ -122,10 +120,10 @@ export async function getUserById(id: number): Promise<User> {
     });
 }
 
-export async function getUserByUsername(username: string): Promise<User> {
+export async function getUserByUsernameOrEmail(username: string, email: string): Promise<User> {
     return new Promise<User>((resolve, reject) => {
         User.findOne({
-            where: { username }
+            where: { username, email }
         }).then((user) => {
             if (!user) {
                 console.log("User not found");

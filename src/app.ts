@@ -43,13 +43,13 @@ export default class App {
         this.app.use(session({
             secret: 'secret',
             resave: false,
-            saveUninitialized: true,
+            saveUninitialized: true
         }));
 
        
         const authenticateUser = (req: Request, res: Response, next: Function) => {
              const customSession = req.session as CustomSession;
-            if(customSession.isLoggedIn) {
+            if(!customSession.isLoggedIn) {
                 console.log('User is authenticated')
                 next();
             } else {

@@ -10,7 +10,7 @@ export async function createBook(request: BookRequest): Promise<Book> {
                 console.log("Book already exists");
                 throw Error("Book already exists");
             }
-            // Create a new book
+            // Create a new book...
             const newBook = new Book({
                 title: request.title,
                 isbn: request.isbn,
