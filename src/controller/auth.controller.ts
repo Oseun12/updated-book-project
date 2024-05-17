@@ -58,7 +58,7 @@ export async function postSignup(req: Request, res: Response) {
             // create the user
             await service.userService.createUser(req.body as UserRequest)
             //Send Email
-            await sendWelcomeEmail(req.body.email);
+            await sendWelcomeEmail(req.body.email, new User);
 
             res.json({ message: 'User created successfully' });
         } catch (error) {

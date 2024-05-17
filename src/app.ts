@@ -86,3 +86,12 @@ export default class App {
 	}
 
 }
+
+
+// const authenticateUser = (req: Request, res: Response, next: Function) => {
+//     const customSession = req.session as CustomSession;
+//     if(customSession.isLoggedIn) {
+//     if(!customSession.isLoggedIn) {
+//         console.log('User is authenticated')
+//         next();
+//     } else {

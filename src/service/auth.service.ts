@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'marrizzsalau7@gmail.com',
-        pass: 'bamvyzjqkdosfdtz'
+        pass: 'zzzzzzzzzzzzzzzzz'
     }
 })
 
@@ -42,18 +42,31 @@ export interface TokenResponse {
     expires_in: string;
 }
 
-export async function sendWelcomeEmail(email: string) {
+export async function sendWelcomeEmail(email: string, user: User) {
     try {
+        const emailContent = 
+            `Thank you for signing up, You can proceed to logging in and showing us the books you have for us!
+            Logging Detail: 
+            Username: ${user.username}
+            Email: ${user.email}
+            
+            Enjoy using My Bookshop!
+        `;
         // Send email
         await transporter.sendMail({
             from: 'marrizzsalau7@gmail.com',
-            to: email,
+            to: user.email,
             subject: 'Welcome to My Bookshop',
-            text: 'Thank you for signing up, You can proceed to logging in and showing us the books you have for us!'
+            text: emailContent
         });
     } catch (error) {
         console.error('Error sending welcome email', error);
         throw error;
     }
 }
-sendWelcomeEmail('timadeshola@gmail.com');
+const user = new User();
+user.username = 'Mary';
+user.email = 'olawoyinchris1998@gmail.com';
+sendWelcomeEmail(user.email, user);
+
+
