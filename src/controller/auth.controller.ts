@@ -1,14 +1,8 @@
 import bcrypt  from 'bcryptjs';
-import { UserToken } from '../middleware/auth';
 import { User } from '../persistence/entity/user';
-import { JwtPayload } from 'jsonwebtoken';
-import { expressjwt, Request as JWTRequest } from 'express-jwt';
-import { UserModel } from '../model/response/user.response';
 import { UserRequest } from '../model/request/user.request';
 import { Request, Response } from 'express';
 import service from '../service/services';
-import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
 import { sendWelcomeEmail } from '../service/auth.service';
 
 
@@ -68,13 +62,13 @@ export async function postSignup(req: Request, res: Response) {
 }
 
 export async function logout(req: Request, res: Response) {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Error logging out:', err);
-                res.status(500).json({ message: 'Internal server error' });
-            } else {
-                res.json({ message: 'Logout successfully' });
-            }
-        })
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error logging out:', err);
+            res.status(500).json({ message: 'Internal server error' });
+        } else {
+            res.json({ message: 'Logout successfully' });
+        }
+    })
 }
 

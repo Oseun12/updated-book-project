@@ -1,7 +1,8 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import DatabaseConfig from '../../config/database';
-const sequelize = new DatabaseConfig().initDb();
 
+
+const sequelize = new DatabaseConfig().initDb();
 
 export class Book extends Model {
     public id!: number;
