@@ -1,19 +1,15 @@
-import bcrypt from 'bcryptjs';
 import express from "express";
 import DatabaseConfig from "./config/database";
 import Routes from "./routes/route.interface";
 import bodyParser from "body-parser";
 import session from "express-session";
-import { Redis } from "ioredis";
-import { verifyAuthToken } from './middleware/auth';
 import { Session } from 'express-session';
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 
 
 interface CustomSession extends Session {
     isLoggedIn?: boolean;
 }
-
 
 export default class App {
     public app: express.Application;
@@ -36,8 +32,6 @@ export default class App {
     public getServer() {
         return this.app;
     }
-
-    
 
     private initializeMiddlewares() {
         this.app.use(session({
@@ -64,14 +58,7 @@ export default class App {
 
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
-        
-        
-
-         
-    
     }
-
-
 
     private initializeRoutes(routes: Routes[]) {
         console.log('app.initializeRoutes', 'Initializing routes...');
